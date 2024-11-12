@@ -1,6 +1,7 @@
-on:
-  watch:
-    types: started
+name:  Custom-Friendlywrt
+on: push
+  # watch:
+  #   types: started
 jobs:
   prepare_release:
     runs-on: ubuntu-20.04
