@@ -258,7 +258,7 @@ jobs:
       run: |
         cd project
         ./build.sh uboot
-        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/806f702c1620e66c9b65a0b6808c5a2a7581e160/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
         ./build.sh kernel
 
     - name: Build sd image
