@@ -26,7 +26,7 @@ jobs:
       release_tag: ${{ steps.release_tag.outputs.release_tag }}
       upload_url: ${{ steps.release.outputs.upload_url }}
 
-  build_friendlywrt:
+  build_friendlywrt_and_kernel:
     needs: prepare_release
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
@@ -136,7 +136,7 @@ jobs:
         overwrite: true
 
   build_img:
-    needs: [prepare_release,build_friendlywrt]
+    needs: [prepare_release,build_friendlywrt_and_kernel]
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
 
@@ -257,6 +257,7 @@ jobs:
       run: |
         cd project
         ./build.sh uboot
+        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/806f702c1620e66c9b65a0b6808c5a2a7581e160/.config -P kernel
         ./build.sh kernel
 
     - name: Build sd image
