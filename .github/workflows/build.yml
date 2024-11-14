@@ -275,7 +275,7 @@ jobs:
       run: |
         cd project
         ./build.sh emmc-img
-        mv out/${{ steps.config.outputs.img_filename }} ../artifact/
+        mv out/friendlywrt_23.05_20241114_rk3566_arm64_eflasher ../artifact/
         cd ../artifact/
         gzip *.img
 
