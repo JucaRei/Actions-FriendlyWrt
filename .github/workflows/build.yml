@@ -270,6 +270,15 @@ jobs:
         cd ../artifact/
         gzip *.img
 
+    - name: Build emmc image
+      id: build_emmc_img
+      run: |
+        cd project
+        ./build.sh emmc-img
+        mv out/${{ steps.config.outputs.img_filename }} ../artifact/
+        cd ../artifact/
+        gzip *.img
+
     - name: Upload image to release
       uses: svenstaro/upload-release-action@v2
       with:
@@ -278,4 +287,3 @@ jobs:
         asset_name: ${{ steps.config.outputs.img_filename }}.gz
         tag: ${{ needs.prepare_release.outputs.release_tag }}
         overwrite: true
-
