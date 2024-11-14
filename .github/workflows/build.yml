@@ -10,7 +10,7 @@ jobs:
     - name: Get release tag
       id: release_tag
       run: |
-        release_tag="FriendlyWrt-$(date +%Y-%m-%d)"
+        release_tag="friendlyWrt-$(date +%Y-%m-%d)"
         echo "##[set-output name=release_tag;]$release_tag"
 
     - name: Create empty release
@@ -237,7 +237,7 @@ jobs:
           ;;
         esac
         [ "${{ matrix.SET }}" == "docker" ] && SUFFIX="-docker"
-        FILENAME=${MODEL}-FriendlyWrt-${{ matrix.VERSION }}${SUFFIX}.img
+        FILENAME=${MODEL}-friendlyWrt-${{ matrix.VERSION }}${SUFFIX}.img
         DIRNAME=friendlywrt$(echo ${{ matrix.VERSION }}|awk -F . '{print $1}')${SUFFIX}
         CONFIG=rockchip${SUFFIX}
         cat > .current_config.mk <<EOL
@@ -261,11 +261,12 @@ jobs:
         wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
         ./build.sh kernel
 
-    - name: Build sd image
+    - name: Build sd image && Emmc Image
       id: build_sd_image
       run: |
         cd project
         ./build.sh sd-img
+        ./build.sh emmc-img
         mv out/${{ steps.config.outputs.img_filename }} ../artifact/
         cd ../artifact/
         gzip *.img
@@ -275,16 +276,36 @@ jobs:
       run: |
         cd project
         ./build.sh emmc-img
-        mv out/friendlywrt_23.05_20241114_rk3566_arm64_eflasher.img out/eflasher-${{ steps.config.outputs.img_filename }}
-        mv out/eflasher-${{ steps.config.outputs.img_filename }} ../artifact/
+
+        cd out
+
+        for oldname in *eflasher.img; do
+          new_base_name="${{ steps.config.outputs.img_filename }}-emmc"
+          newfilename=$(echo "$oldname" | sed 's/.*eflasher/'"$new_base_name"'/')
+          mv "$oldname" "$newfilename"
+          echo "Rename $oldname for $newfilename"
+        done
+
+        cd ..
+
+        mv out/${{ steps.config.outputs.img_filename }}-emmc ../artifact/
         cd ../artifact/
         gzip *.img
 
-    - name: Upload image to release
+    - name: Upload SD image to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ./artifact/${{ steps.config.outputs.img_filename }}.gz
         asset_name: ${{ steps.config.outputs.img_filename }}.gz
+        tag: ${{ needs.prepare_release.outputs.release_tag }}
+        overwrite: true
+
+    - name: Upload EMMC image to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./artifact/${{ steps.config.outputs.img_filename }}-emmc.gz
+        asset_name: ${{ steps.config.outputs.img_filename }}-emmc.gz
         tag: ${{ needs.prepare_release.outputs.release_tag }}
         overwrite: true
