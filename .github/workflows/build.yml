@@ -266,7 +266,6 @@ jobs:
       run: |
         cd project
         ./build.sh sd-img
-        ./build.sh emmc-img
         mv out/${{ steps.config.outputs.img_filename }} ../artifact/
         cd ../artifact/
         gzip *.img
