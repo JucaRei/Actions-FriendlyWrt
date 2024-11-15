@@ -277,18 +277,7 @@ jobs:
         cd project
         ./build.sh emmc-img
 
-        cd out
-
-        for oldname in *eflasher.img; do
-          new_base_name="${{ steps.config.outputs.img_filename }}-emmc"
-          newfilename=$(echo "$oldname" | sed 's/.*eflasher/'"$new_base_name"'/')
-          mv "$oldname" "$newfilename"
-          echo "Rename $oldname for $newfilename"
-        done
-
-        cd ..
-
-        mv out/${{ steps.config.outputs.img_filename }}-emmc ../artifact/
+        mv out/friendlywrt_23.05*.img ../artifact/
         cd ../artifact/
         gzip *.img
 
@@ -305,7 +294,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./artifact/${{ steps.config.outputs.img_filename }}-emmc.gz
-        asset_name: ${{ steps.config.outputs.img_filename }}-emmc.gz
+        file: ./artifact/*.gz
+        asset_name: *.gz
         tag: ${{ needs.prepare_release.outputs.release_tag }}
         overwrite: true
