@@ -277,8 +277,9 @@ jobs:
         cd project
         ./build.sh emmc-img
 
-        mv out/friendlywrt_23.05*.img ../artifact/
-        cd ../artifact/
+        cd out
+        mv friendlywrt_23.05_$(date +%Y-%m-%d)_rk3566_arm64_eflasher.img ../artifact/
+
         gzip *.img
 
     - name: Upload SD image to release
@@ -294,7 +295,6 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./artifact/*.gz
-        asset_name: *.gz
-        tag: ${{ needs.prepare_release.outputs.release_tag }}
+        file: ./artifact/friendlywrt_23.05_$(date +%Y-%m-%d)_rk3566_arm64_eflasher.gz
+        asset_name: friendlywrt_23.05_$(date +%Y-%m-%d)_rk3566_arm64_eflasher.gz
         overwrite: true
