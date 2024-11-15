@@ -277,7 +277,7 @@ jobs:
         ./build.sh emmc-img
 
         cd out
-        mv friendlywrt_23.05_$(date +%Y-%m-%d)_rk3566_arm64_eflasher.img ../artifact/
+        mv friendlywrt_23.05_$(date +%Y%m%d)_rk3566_arm64_eflasher.img ../artifact/
 
         gzip *.img
 
@@ -294,6 +294,6 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./artifact/friendlywrt_23.05_$(date +%Y-%m-%d)_rk3566_arm64_eflasher.gz
-        asset_name: friendlywrt_23.05_$(date +%Y-%m-%d)_rk3566_arm64_eflasher.gz
+        file: ./artifact/friendlywrt_23.05_$(date +%Y%m%d)_rk3566_arm64_eflasher.gz
+        asset_name: friendlywrt_23.05_$(date +%Y%m%d)_rk3566_arm64_eflasher.gz
         overwrite: true
