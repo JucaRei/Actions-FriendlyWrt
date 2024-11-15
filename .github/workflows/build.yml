@@ -276,9 +276,9 @@ jobs:
         cd project
         ./build.sh emmc-img
 
-        cd out
-        mv friendlywrt_23.05_$(date +%Y%m%d)_rk3566_arm64_eflasher.img ../artifact/
+        mv out/friendlywrt_23.05_$(date +%Y%m%d)_rk3566_arm64_eflasher.img ../artifact/
 
+        cd ../artifact/
         gzip *.img
 
     - name: Upload SD image to release
