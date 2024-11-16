@@ -32,10 +32,8 @@ jobs:
     if: github.event.repository.owner.id == github.event.sender.id
     strategy:
       matrix:
-        # VERSION: [21.02, 23.05]
-        VERSION: [23.05]
+        VERSION: [21.02, 23.05]
         SET: [docker, non-docker]
-        # SET: [docker]
 
     steps:
     - name: Checkout
@@ -145,8 +143,7 @@ jobs:
 
     strategy:
       matrix:
-        # VERSION: [21.02, 23.05]
-        VERSION: [23.05]
+        VERSION: [21.02, 23.05]
         CPU: [ rk3566 ]
         SET: [docker, non-docker]
     steps:
@@ -264,34 +261,16 @@ jobs:
         wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
         ./build.sh kernel
 
-    # - name: Build sd image
-    #   id: build_sd_image
-    #   run: |
-    #     cd project
-    #     ./build.sh sd-img
-    #     mv out/${{ steps.config.outputs.img_filename }} ../artifact/
-    #     cd ../artifact/
-    #     gzip *.img
-
-    - name: Build emmc image
-      id: build_emmc_img
+    - name: Build sd image
+      id: build_sd_image
       run: |
         cd project
-        ./build.sh emmc-img
+        ./build.sh sd-img
         mv out/${{ steps.config.outputs.img_filename }} ../artifact/
         cd ../artifact/
         gzip *.img
 
-    # - name: Upload SD image to release
-    #   uses: svenstaro/upload-release-action@v2
-    #   with:
-    #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-    #     file: ./artifact/${{ steps.config.outputs.img_filename }}.gz
-    #     asset_name: ${{ steps.config.outputs.img_filename }}.gz
-    #     tag: ${{ needs.prepare_release.outputs.release_tag }}
-    #     overwrite: true
-
-    - name: Upload EMMC image to release
+    - name: Upload SD image to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
