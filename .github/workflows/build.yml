@@ -261,6 +261,13 @@ jobs:
         wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
         ./build.sh kernel
 
+        ## If you want to compile a driver from source, here is an example
+        # case ${{ matrix.CPU }} in
+        # rk3568)
+        #     ../scripts/3rd/add_r8125.sh
+        #     ;;
+        # esac
+
     - name: Build sd image
       id: build_sd_image
       run: |
