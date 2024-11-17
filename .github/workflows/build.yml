@@ -1,7 +1,6 @@
-name:  Custom-Friendlywrt
-on: push
-  # watch:
-  #   types: started
+on:
+  watch:
+    types: started
 jobs:
   prepare_release:
     runs-on: ubuntu-20.04
@@ -10,7 +9,7 @@ jobs:
     - name: Get release tag
       id: release_tag
       run: |
-        release_tag="friendlyWrt-$(date +%Y-%m-%d)"
+        release_tag="FriendlyWrt-$(date +%Y-%m-%d)"
         echo "##[set-output name=release_tag;]$release_tag"
 
     - name: Create empty release
@@ -26,7 +25,7 @@ jobs:
       release_tag: ${{ steps.release_tag.outputs.release_tag }}
       upload_url: ${{ steps.release.outputs.upload_url }}
 
-  build_friendlywrt_and_kernel:
+  build_friendlywrt:
     needs: prepare_release
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
@@ -65,7 +64,7 @@ jobs:
         mkdir project
         cd project
         repo init --depth=1 -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v${{ matrix.VERSION }} \
-                -m rk3566.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+                -m rk3399.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
 
         repo sync -c friendlywrt --no-clone-bundle
         repo sync -c configs --no-clone-bundle
@@ -81,12 +80,6 @@ jobs:
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
 
-        cd friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/806f702c1620e66c9b65a0b6808c5a2a7581e160/.config
-
-        cd ..
-        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
-
     - name: Prepare dot config and feeds
       run: |
         cd project
@@ -94,7 +87,7 @@ jobs:
         DIRNAME=friendlywrt$(echo ${{ matrix.VERSION }}|awk -F . '{print $1}')${SUFFIX}
         CONFIG=rockchip${SUFFIX}
         cat > .current_config.mk <<EOL
-        . device/friendlyelec/rk3566/base.mk
+        . device/friendlyelec/rk3399/base.mk
         TARGET_IMAGE_DIRNAME=${DIRNAME}
         TARGET_FRIENDLYWRT_CONFIG=${CONFIG}
         EOL
@@ -112,6 +105,7 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
+        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/806f702c1620e66c9b65a0b6808c5a2a7581e160/.config
         make -j$(nproc) || make -j1 V=s
         echo $?
 
@@ -142,14 +136,14 @@ jobs:
         overwrite: true
 
   build_img:
-    needs: [prepare_release,build_friendlywrt_and_kernel]
+    needs: [prepare_release,build_friendlywrt]
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
 
     strategy:
       matrix:
         VERSION: [21.02, 23.05]
-        CPU: [ rk3566 ]
+        CPU: [rk3328, rk3528, rk3399, rk3566, rk3568, rk3588]
         SET: [docker, non-docker]
     steps:
     - name: Checkout
@@ -242,7 +236,7 @@ jobs:
           ;;
         esac
         [ "${{ matrix.SET }}" == "docker" ] && SUFFIX="-docker"
-        FILENAME=${MODEL}-friendlyWrt-${{ matrix.VERSION }}${SUFFIX}.img
+        FILENAME=${MODEL}-FriendlyWrt-${{ matrix.VERSION }}${SUFFIX}.img
         DIRNAME=friendlywrt$(echo ${{ matrix.VERSION }}|awk -F . '{print $1}')${SUFFIX}
         CONFIG=rockchip${SUFFIX}
         cat > .current_config.mk <<EOL
@@ -263,9 +257,10 @@ jobs:
       run: |
         cd project
         ./build.sh uboot
+        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
         ./build.sh kernel
 
-        # If you want to compile a driver from source, here is an example
+        ## If you want to compile a driver from source, here is an example
         case ${{ matrix.CPU }} in
         rk3568)
             # ../scripts/3rd/add_r8125.sh
@@ -282,7 +277,7 @@ jobs:
         cd ../artifact/
         gzip *.img
 
-    - name: Upload SD image to release
+    - name: Upload image to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
