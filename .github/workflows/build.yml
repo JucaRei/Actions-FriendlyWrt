@@ -1,6 +1,6 @@
-on:
-  watch:
-    types: started
+on: push
+  # watch:
+  #   types: started
 jobs:
   prepare_release:
     runs-on: ubuntu-20.04
