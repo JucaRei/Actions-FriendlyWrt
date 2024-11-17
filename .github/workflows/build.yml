@@ -81,6 +81,12 @@ jobs:
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
 
+        cd friendlywrt
+        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/806f702c1620e66c9b65a0b6808c5a2a7581e160/.config
+
+        cd ..
+        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
+
     - name: Prepare dot config and feeds
       run: |
         cd project
@@ -97,7 +103,6 @@ jobs:
     - name: Download package
       run: |
         cd project/friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/806f702c1620e66c9b65a0b6808c5a2a7581e160/.config
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
@@ -258,15 +263,15 @@ jobs:
       run: |
         cd project
         ./build.sh uboot
-        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
         ./build.sh kernel
 
-        ## If you want to compile a driver from source, here is an example
-        # case ${{ matrix.CPU }} in
-        # rk3568)
-        #     ../scripts/3rd/add_r8125.sh
-        #     ;;
-        # esac
+        # If you want to compile a driver from source, here is an example
+        case ${{ matrix.CPU }} in
+        rk3568)
+            # ../scripts/3rd/add_r8125.sh
+            ../scripts/3rd/add_8188gu.sh
+            ;;
+        esac
 
     - name: Build sd image
       id: build_sd_image
