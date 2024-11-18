@@ -31,8 +31,10 @@ jobs:
     if: github.event.repository.owner.id == github.event.sender.id
     strategy:
       matrix:
-        VERSION: [21.02, 23.05]
-        SET: [docker, non-docker]
+        # VERSION: [21.02, 23.05]
+        VERSION: [23.05]
+        # SET: [docker, non-docker]
+        SET: [docker]
 
     steps:
     - name: Checkout
@@ -114,6 +116,7 @@ jobs:
       if: steps.compile.outcome == 'failure'
       run: |
         cd project/friendlywrt
+        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/cadff211dfe81d3fff2b2bd6b4cf488f77955d7c/.config
         make -j1 V=s
 
     - name: Create rootfs package
@@ -143,9 +146,11 @@ jobs:
 
     strategy:
       matrix:
-        VERSION: [21.02, 23.05]
-        CPU: [rk3328, rk3528, rk3399, rk3566, rk3568, rk3588]
-        SET: [docker, non-docker]
+        # VERSION: [21.02, 23.05]
+        VERSION: [23.05]
+        # CPU: [rk3328, rk3528, rk3399, rk3566, rk3568, rk3588]
+        CPU: [rk3566]
+        SET: [docker]
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -188,15 +193,15 @@ jobs:
         repo sync -c scripts/sd-fuse  --no-clone-bundle
         repo sync -c toolchain  --no-clone-bundle
 
-    - name: Download friendlywrt rootfs (non-docker)
-      if: matrix.SET == 'non-docker'
-      uses: robinraju/release-downloader@v1.6
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        repository: ${{ github.repository }}
-        tag: ${{ needs.prepare_release.outputs.release_tag }}
-        fileName: "rootfs-friendlywrt-${{ matrix.VERSION }}.tgz"
+    # - name: Download friendlywrt rootfs (non-docker)
+    #   if: matrix.SET == 'non-docker'
+    #   uses: robinraju/release-downloader@v1.6
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     repository: ${{ github.repository }}
+    #     tag: ${{ needs.prepare_release.outputs.release_tag }}
+    #     fileName: "rootfs-friendlywrt-${{ matrix.VERSION }}.tgz"
 
     - name: Download friendlywrt rootfs (docker)
       if: matrix.SET == 'docker'
@@ -213,24 +218,24 @@ jobs:
       run: |
         cd project
         case ${{ matrix.CPU }} in
-        rk3328)
-          MODEL=R2S-R2C-Series
-          ;;
-        rk3528)
-          MODEL=NanoPi-Zero2
-          ;;
-        rk3399)
-          MODEL=R4S-Series
-          ;;
-        rk3568)
-          MODEL=R5S-R5C-Series
-          ;;
+        # rk3328)
+        #   MODEL=R2S-R2C-Series
+        #   ;;
+        # rk3528)
+        #   MODEL=NanoPi-Zero2
+        #   ;;
+        # rk3399)
+        #   MODEL=R4S-Series
+        #   ;;
+        # rk3568)
+        #   MODEL=R5S-R5C-Series
+        #   ;;
         rk3566)
           MODEL=R3S-Series
           ;;
-        rk3588)
-          MODEL=T6-R6S-R6C-M6-Series
-          ;;
+        # rk3588)
+        #   MODEL=T6-R6S-R6C-M6-Series
+        #   ;;
         *)
           echo "unknow cpu"
           exit 1
@@ -263,7 +268,7 @@ jobs:
 
         ## If you want to compile a driver from source, here is an example
         case ${{ matrix.CPU }} in
-        rk3568)
+        rk3566)
             ../scripts/3rd/add_8188gu.sh
             ;;
         esac
