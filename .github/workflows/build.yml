@@ -79,6 +79,8 @@ jobs:
         cd project
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
+        sed -i 's/192.168.2.1/10.1.0.1/g' \
++            friendlywrt/target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 
     - name: Prepare dot config and feeds
       run: |
@@ -105,7 +107,7 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/806f702c1620e66c9b65a0b6808c5a2a7581e160/.config
+        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/cadff211dfe81d3fff2b2bd6b4cf488f77955d7c/.config
         make -j$(nproc) || make -j1 V=s
         echo $?
 
@@ -257,7 +259,7 @@ jobs:
       run: |
         cd project
         ./build.sh uboot
-        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/3aefa02f9fd1097c458b631d3a15d23c8a6f3b90/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/d5891d6a06dc7c24d861e5841d5a3e6c0291e943/.config -P kernel
         ./build.sh kernel
 
         ## If you want to compile a driver from source, here is an example
