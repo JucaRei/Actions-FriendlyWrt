@@ -13,6 +13,7 @@ modules_dir=$(readlink -f ./out/output_*_kmodules/lib/modules/${kernel_ver})
 	exit 1
 }
 
+
 # build kernel driver
 git clone https://github.com/wandercn/RTL8188GU -b master
 pushd RTL8188GU/8188gu-1.0.1

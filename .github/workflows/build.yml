@@ -263,7 +263,6 @@ jobs:
         ## If you want to compile a driver from source, here is an example
         case ${{ matrix.CPU }} in
         rk3568)
-            # ../scripts/3rd/add_r8125.sh
             ../scripts/3rd/add_8188gu.sh
             ;;
         esac
