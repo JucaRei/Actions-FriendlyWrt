@@ -269,11 +269,11 @@ jobs:
         ./build.sh kernel
 
         ## If you want to compile a driver from source, here is an example
-        case ${{ matrix.CPU }} in
-        rk3566)
-            ../scripts/3rd/add_8188gu.sh
-            ;;
-        esac
+        # case ${{ matrix.CPU }} in
+        # rk3566)
+        #     ../scripts/3rd/add_8188gu.sh
+        #     ;;
+        # esac
 
     - name: Build sd image
       id: build_sd_image

@@ -18,6 +18,7 @@ modules_dir=$(readlink -f ./out/output_*_kmodules/lib/modules/${kernel_ver})
 git clone https://github.com/wandercn/RTL8188GU -b master
 pushd RTL8188GU/8188gu-1.0.1
 	chmod +x ARM_RPI.sh
+	chmod +x ARM64.sh
 	./ARM64.sh
 	make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -C ${top_path}/kernel M=$(pwd)
 	aarch64-linux-gnu-strip --strip-unneeded 8188gu.ko
