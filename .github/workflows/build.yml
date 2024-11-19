@@ -141,7 +141,7 @@ jobs:
         overwrite: true
 
   build_img:
-    timeout-minutes: 600
+    timeout-minutes: 800
     needs: [prepare_release,build_friendlywrt]
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
@@ -269,11 +269,11 @@ jobs:
         ./build.sh kernel
 
         ## If you want to compile a driver from source, here is an example
-        # case ${{ matrix.CPU }} in
-        # rk3566)
-        #     ../scripts/3rd/add_8188gu.sh
-        #     ;;
-        # esac
+        case ${{ matrix.CPU }} in
+        rk3566)
+            ../scripts/3rd/add_8188gu.sh
+            ;;
+        esac
 
     - name: Build sd image
       id: build_sd_image
