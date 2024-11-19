@@ -26,6 +26,7 @@ jobs:
       upload_url: ${{ steps.release.outputs.upload_url }}
 
   build_friendlywrt:
+    timeout-minutes: 600
     needs: prepare_release
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
@@ -140,6 +141,7 @@ jobs:
         overwrite: true
 
   build_img:
+    timeout-minutes: 600
     needs: [prepare_release,build_friendlywrt]
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
