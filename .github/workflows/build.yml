@@ -267,7 +267,8 @@ jobs:
         
         cd kernel 
         rm -rf .config .config.old ./tmp
-        wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/d636c16e5d151283d8e6c7e383fd1df80a7ebd29/.config
+        # wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/d636c16e5d151283d8e6c7e383fd1df80a7ebd29/.config
+        wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/826dfda8e752df36ea3ba7762632f182f74a9668/.config
         cp .config .config.old
         cp .config .oldconfig
         cd ..
