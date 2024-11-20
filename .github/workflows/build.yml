@@ -264,13 +264,15 @@ jobs:
       run: |
         cd project
         ./build.sh uboot
-        ./build.sh kernel
         
         cd kernel 
-        rm -rf .config .config.old
+        rm -rf .config .config.old ./tmp
         wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/d636c16e5d151283d8e6c7e383fd1df80a7ebd29/.config
-        make V=sc
+        cp .config .config.old
+        cp .config .oldconfig
         cd ..
+        
+        ./build.sh kernel
 
         ## If you want to compile a driver from source, here is an example
         # case ${{ matrix.CPU }} in
