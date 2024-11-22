@@ -26,16 +26,14 @@ jobs:
       upload_url: ${{ steps.release.outputs.upload_url }}
 
   build_friendlywrt:
-    timeout-minutes: 600
     needs: prepare_release
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
     strategy:
       matrix:
         # VERSION: [21.02, 23.05]
-        VERSION: [23.05]
-        # SET: [docker, non-docker]
-        SET: [docker]
+        VERSION: [ 23.05 ]
+        SET: [docker, non-docker]
 
     steps:
     - name: Checkout
@@ -76,6 +74,9 @@ jobs:
         repo sync -c scripts --no-clone-bundle
         repo sync -c scripts/sd-fuse  --no-clone-bundle
         repo sync -c toolchain  --no-clone-bundle
+        wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/da2b49cd4e59192ae2143995f861e5ae573cc6bf/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/9df77357280906ef338a28289c108e9c445c182c/.config -P friendlywrt
+
 
     - name: Apply customizations
       run: |
@@ -90,7 +91,7 @@ jobs:
         DIRNAME=friendlywrt$(echo ${{ matrix.VERSION }}|awk -F . '{print $1}')${SUFFIX}
         CONFIG=rockchip${SUFFIX}
         cat > .current_config.mk <<EOL
-        . device/friendlyelec/rk3399/base.mk
+        . device/friendlyelec/rk3566/base.mk
         TARGET_IMAGE_DIRNAME=${DIRNAME}
         TARGET_FRIENDLYWRT_CONFIG=${CONFIG}
         EOL
@@ -108,7 +109,6 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/9df77357280906ef338a28289c108e9c445c182c/.config
         make -j$(nproc) || make -j1 V=s
         echo $?
 
@@ -116,7 +116,6 @@ jobs:
       if: steps.compile.outcome == 'failure'
       run: |
         cd project/friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/9df77357280906ef338a28289c108e9c445c182c/.config
         make -j1 V=s
 
     - name: Create rootfs package
@@ -140,18 +139,16 @@ jobs:
         overwrite: true
 
   build_img:
-    timeout-minutes: 800
     needs: [prepare_release,build_friendlywrt]
     runs-on: ubuntu-20.04
     if: github.event.repository.owner.id == github.event.sender.id
 
     strategy:
       matrix:
-        # VERSION: [21.02, 23.05]
-        VERSION: [23.05]
+        VERSION: [21.02, 23.05]
         # CPU: [rk3328, rk3528, rk3399, rk3566, rk3568, rk3588]
-        CPU: [rk3566]
-        SET: [docker]
+        CPU: [ rk3566 ]
+        SET: [docker, non-docker]
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -193,16 +190,18 @@ jobs:
         repo sync -c scripts --no-clone-bundle
         repo sync -c scripts/sd-fuse  --no-clone-bundle
         repo sync -c toolchain  --no-clone-bundle
+        wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/da2b49cd4e59192ae2143995f861e5ae573cc6bf/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/9df77357280906ef338a28289c108e9c445c182c/.config -P friendlywrt
 
-    # - name: Download friendlywrt rootfs (non-docker)
-    #   if: matrix.SET == 'non-docker'
-    #   uses: robinraju/release-downloader@v1.6
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     repository: ${{ github.repository }}
-    #     tag: ${{ needs.prepare_release.outputs.release_tag }}
-    #     fileName: "rootfs-friendlywrt-${{ matrix.VERSION }}.tgz"
+    - name: Download friendlywrt rootfs (non-docker)
+      if: matrix.SET == 'non-docker'
+      uses: robinraju/release-downloader@v1.6
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        repository: ${{ github.repository }}
+        tag: ${{ needs.prepare_release.outputs.release_tag }}
+        fileName: "rootfs-friendlywrt-${{ matrix.VERSION }}.tgz"
 
     - name: Download friendlywrt rootfs (docker)
       if: matrix.SET == 'docker'
@@ -219,24 +218,24 @@ jobs:
       run: |
         cd project
         case ${{ matrix.CPU }} in
-        # rk3328)
-        #   MODEL=R2S-R2C-Series
-        #   ;;
-        # rk3528)
-        #   MODEL=NanoPi-Zero2
-        #   ;;
-        # rk3399)
-        #   MODEL=R4S-Series
-        #   ;;
-        # rk3568)
-        #   MODEL=R5S-R5C-Series
-        #   ;;
+        rk3328)
+          MODEL=R2S-R2C-Series
+          ;;
+        rk3528)
+          MODEL=NanoPi-Zero2
+          ;;
+        rk3399)
+          MODEL=R4S-Series
+          ;;
+        rk3568)
+          MODEL=R5S-R5C-Series
+          ;;
         rk3566)
           MODEL=R3S-Series
           ;;
-        # rk3588)
-        #   MODEL=T6-R6S-R6C-M6-Series
-        #   ;;
+        rk3588)
+          MODEL=T6-R6S-R6C-M6-Series
+          ;;
         *)
           echo "unknow cpu"
           exit 1
@@ -264,20 +263,12 @@ jobs:
       run: |
         cd project
         ./build.sh uboot
-        
-        cd kernel 
-        rm -rf .config .config.old ./tmp
-        # wget https://gist.githubusercontent.com/JucaRei/4a258c69898f21157fccb47705607e90/raw/d636c16e5d151283d8e6c7e383fd1df80a7ebd29/.config
-        wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/826dfda8e752df36ea3ba7762632f182f74a9668/.config
-        cp .config .config.old
-        cp .config .oldconfig
-        cd ..
-        
         ./build.sh kernel
 
         ## If you want to compile a driver from source, here is an example
         # case ${{ matrix.CPU }} in
-        # rk3566)
+        # rk3568)
+        #     ../scripts/3rd/add_r8125.sh
         #     ../scripts/3rd/add_8188gu.sh
         #     ;;
         # esac
