@@ -33,7 +33,8 @@ jobs:
       matrix:
         # VERSION: [21.02, 23.05]
         VERSION: [ 23.05 ]
-        SET: [docker, non-docker]
+        # SET: [docker, non-docker]
+        SET: [ docker ]
 
     steps:
     - name: Checkout
@@ -65,7 +66,7 @@ jobs:
         mkdir project
         cd project
         repo init --depth=1 -u https://github.com/friendlyarm/friendlywrt_manifests -b master-v${{ matrix.VERSION }} \
-                -m rk3399.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
+                -m rk3566.xml --repo-url=https://github.com/friendlyarm/repo  --no-clone-bundle
 
         repo sync -c friendlywrt --no-clone-bundle
         repo sync -c configs --no-clone-bundle
@@ -145,10 +146,11 @@ jobs:
 
     strategy:
       matrix:
-        VERSION: [21.02, 23.05]
+        VERSION: [ 21.02, 23.05 ]
         # CPU: [rk3328, rk3528, rk3399, rk3566, rk3568, rk3588]
         CPU: [ rk3566 ]
-        SET: [docker, non-docker]
+        # SET: [docker, non-docker]
+        SET: [ docker ]
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -218,24 +220,24 @@ jobs:
       run: |
         cd project
         case ${{ matrix.CPU }} in
-        rk3328)
-          MODEL=R2S-R2C-Series
-          ;;
-        rk3528)
-          MODEL=NanoPi-Zero2
-          ;;
-        rk3399)
-          MODEL=R4S-Series
-          ;;
-        rk3568)
-          MODEL=R5S-R5C-Series
-          ;;
+        # rk3328)
+        #   MODEL=R2S-R2C-Series
+        #   ;;
+        # rk3528)
+        #   MODEL=NanoPi-Zero2
+        #   ;;
+        # rk3399)
+        #   MODEL=R4S-Series
+        #   ;;
+        # rk3568)
+        #   MODEL=R5S-R5C-Series
+        #   ;;
         rk3566)
           MODEL=R3S-Series
           ;;
-        rk3588)
-          MODEL=T6-R6S-R6C-M6-Series
-          ;;
+        # rk3588)
+        #   MODEL=T6-R6S-R6C-M6-Series
+        #   ;;
         *)
           echo "unknow cpu"
           exit 1
