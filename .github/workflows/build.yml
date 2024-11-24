@@ -271,45 +271,17 @@ jobs:
         wget https://gist.githubusercontent.com/JucaRei/41f48ce460b480a6bffb0b2e3a177714/raw/6c0f9bc41f60d6dd2263b6bd16d482108ec43bf8/.config -P u-boot
         ./build.sh uboot
 
-        sed '/^CONFIG_MEMCG=y$/r'<(cat <<EOF
-        CONFIG_NUMA_BALANCING=y
-        CONFIG_CGROUP_SCHED=y
-        CONFIG_FAIR_GROUP_SCHED=y
-        CONFIG_RT_GROUP_SCHED=y
-        CONFIG_UCLAMP_TASK_GROUP=y
-        CONFIG_CGROUP_RDMA=y
-        EOF
-        ) -i -- kernel/arch/arm64/configs/defconfig
+        sed -i "/^CONFIG_NUMA_BALANCING=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/defconfig
 
-        sed '/^CONFIG_CFS_BANDWIDTH=y$/r'<(cat <<EOF
-        CONFIG_NUMA_BALANCING=y
-        CONFIG_CGROUP_SCHED=y
-        CONFIG_FAIR_GROUP_SCHED=y
-        CONFIG_RT_GROUP_SCHED=y
-        CONFIG_UCLAMP_TASK_GROUP=y
-        CONFIG_CGROUP_RDMA=y
-        EOF
-        ) -i -- kernel/arch/arm64/configs/nanopi5_linux_defconfig
+        sed -i "/^CONFIG_MEMCG=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/rockchip_defconfig
 
-        sed '/^CONFIG_UCLAMP_BUCKETS_COUNT=20$/r'<(cat <<EOF
-        CONFIG_NUMA_BALANCING=y
-        CONFIG_CGROUP_SCHED=y
-        CONFIG_FAIR_GROUP_SCHED=y
-        CONFIG_RT_GROUP_SCHED=y
-        CONFIG_UCLAMP_TASK_GROUP=y
-        CONFIG_CGROUP_RDMA=y
-        EOF
-        ) -i -- kernel/arch/arm64/configs/rockchip_linux_defconfig
+        sed -i "/^CONFIG_MEMCG=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/nanopi5_linux_defconfig
 
-        sed '/^CONFIG_CGROUP_PIDS=y$/r'<(cat <<EOF
-        CONFIG_NUMA_BALANCING=y
-        CONFIG_CGROUP_SCHED=y
-        CONFIG_FAIR_GROUP_SCHED=y
-        CONFIG_RT_GROUP_SCHED=y
-        CONFIG_UCLAMP_TASK_GROUP=y
-        CONFIG_CGROUP_RDMA=y
-        EOF
-        ) -i -- kernel/arch/arm64/configs/rockchip_linux_docker.config
+        sed -i "/^CONFIG_UCLAMP_BUCKETS_COUNT=20=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/rockchip_linux_defconfig
+
+        sed -i "/^CONFIG_CGROUP_PIDS=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/rockchip_linux_docker.config
+
+        sed -i -e '$a\'$'\n''CONFIG_MALI_CSF_SUPPORT=y' kernel/arch/arm64/configs/rk356x.config
 
         wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
 
