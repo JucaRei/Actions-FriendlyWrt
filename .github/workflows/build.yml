@@ -287,9 +287,6 @@ jobs:
 
         ./build.sh kernel
 
-        # Rebuild Friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/8288f1df5026af37174d784e2649ddb1530b41a1/.config -P friendlywrt
-        ./build friendlywrt
 
         ## If you want to compile a driver from source, here is an example
         # case ${{ matrix.CPU }} in
