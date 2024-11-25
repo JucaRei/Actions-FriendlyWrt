@@ -76,9 +76,6 @@ jobs:
         repo sync -c scripts --no-clone-bundle
         repo sync -c scripts/sd-fuse  --no-clone-bundle
         repo sync -c toolchain  --no-clone-bundle
-        wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
-        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/79f0268addb6f1846405daf4727c93586f8008f9/.config -P friendlywrt
-
 
     - name: Apply customizations
       run: |
@@ -103,7 +100,7 @@ jobs:
     - name: Download package
       run: |
         cd project/friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/79f0268addb6f1846405daf4727c93586f8008f9/.config
+        https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/948167483fb403398d04b990feebfbfbf00baa34/.config
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
@@ -113,7 +110,6 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/79f0268addb6f1846405daf4727c93586f8008f9/.config
         make -j$(nproc) || make -j1 V=s
         echo $?
 
