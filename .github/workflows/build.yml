@@ -81,7 +81,7 @@ jobs:
       run: |
         cd project
         # wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/948167483fb403398d04b990feebfbfbf00baa34/.config -P friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/caa5cb1c5faeaae8341b06ca8983770ae5176170/.config -P friendlywrt
+        wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/cb61f5d8a692bf30284a4eb277ae463b5099dc1d/.config -P friendlywrt
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
         sed -i 's/192.168.2.1/10.10.10.1/g' friendlywrt/target/linux/rockchip/armv8/base-files/etc/board.d/02_network
