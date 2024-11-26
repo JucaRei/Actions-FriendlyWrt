@@ -109,7 +109,7 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
-        https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/948167483fb403398d04b990feebfbfbf00baa34/.config
+        wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/948167483fb403398d04b990feebfbfbf00baa34/.config
         make -j$(nproc) || make -j1 V=s
         echo $?
 
