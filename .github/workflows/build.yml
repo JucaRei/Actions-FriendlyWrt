@@ -199,7 +199,7 @@ jobs:
         repo sync -c scripts/sd-fuse  --no-clone-bundle
         repo sync -c toolchain  --no-clone-bundle
         # wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
-        wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/18b4b46647283600afdc1d8492c4db562006b4cb/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/63686d1d90c8e56d071d9eca8a096db5ffbde159/.config -P kernel
 
     - name: Download friendlywrt rootfs (non-docker)
       if: matrix.SET == 'non-docker'
@@ -274,21 +274,21 @@ jobs:
         wget https://gist.githubusercontent.com/JucaRei/6276c6ab5852c0b4722b340ff884b424/raw/71fb6b79f4096d6950fe16a547a4e3e45a67bada/.config -P u-boot
         ./build.sh uboot
 
-        sed -i "/^CONFIG_NUMA_BALANCING=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/defconfig
+        sed -i "/^CONFIG_NUMA_BALANCING=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=yn\CONFIG_CGROUP_CPU=yn\CONFIG_CGROUP_DEBUG=yn\CONFIG_MEMCG_SWAP=yn\CONFIG_MEMCG_SWAP_ENABLED=y" kernel/arch/arm64/configs/defconfig
 
-        sed -i "/^CONFIG_MEMCG=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/rockchip_defconfig
+        sed -i "/^CONFIG_MEMCG=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=yn\CONFIG_CGROUP_CPU=yn\CONFIG_CGROUP_DEBUG=yn\CONFIG_MEMCG_SWAP=yn\CONFIG_MEMCG_SWAP_ENABLED=y" kernel/arch/arm64/configs/rockchip_defconfig
 
-        sed -i "/^CONFIG_MEMCG=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/nanopi5_linux_defconfig
+        sed -i "/^CONFIG_MEMCG=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=yn\CONFIG_CGROUP_CPU=yn\CONFIG_CGROUP_DEBUG=yn\CONFIG_MEMCG_SWAP=yn\CONFIG_MEMCG_SWAP_ENABLED=y" kernel/arch/arm64/configs/nanopi5_linux_defconfig
 
-        sed -i "/^CONFIG_UCLAMP_BUCKETS_COUNT=20=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/rockchip_linux_defconfig
+        sed -i "/^CONFIG_UCLAMP_BUCKETS_COUNT=20=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=yn\CONFIG_CGROUP_CPU=yn\CONFIG_CGROUP_DEBUG=yn\CONFIG_MEMCG_SWAP=yn\CONFIG_MEMCG_SWAP_ENABLED=y" kernel/arch/arm64/configs/rockchip_linux_defconfig
 
-        sed -i "/^CONFIG_CGROUP_PIDS=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/rockchip_linux_docker.config
+        sed -i "/^CONFIG_CGROUP_PIDS=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=yn\CONFIG_CGROUP_CPU=yn\CONFIG_CGROUP_DEBUG=yn\CONFIG_MEMCG_SWAP=yn\CONFIG_MEMCG_SWAP_ENABLED=y" kernel/arch/arm64/configs/rockchip_linux_docker.config
 
         sed -i -e '$a\'$'\n''CONFIG_MALI_CSF_SUPPORT=y' kernel/arch/arm64/configs/rk356x.config
 
         # wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
 
-        wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/18b4b46647283600afdc1d8492c4db562006b4cb/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/63686d1d90c8e56d071d9eca8a096db5ffbde159/.config -P kernel
 
         ./build.sh kernel
 
