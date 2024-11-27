@@ -119,7 +119,9 @@ jobs:
       if: steps.compile.outcome == 'failure'
       run: |
         cd project/friendlywrt
-        make -j1 V=s
+        rm .config .config.old ./tmp
+        wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/624a47e1eb22f2f0c19f71ba44f07fe58b4af140/.config
+        make -j1 V=sc
 
     - name: Create rootfs package
       id: create_rootfs_package
@@ -269,6 +271,7 @@ jobs:
       run: |
         cd project
         # wget https://gist.githubusercontent.com/JucaRei/41f48ce460b480a6bffb0b2e3a177714/raw/6c0f9bc41f60d6dd2263b6bd16d482108ec43bf8/.config -P u-boot
+        wget https://gist.githubusercontent.com/JucaRei/6276c6ab5852c0b4722b340ff884b424/raw/71fb6b79f4096d6950fe16a547a4e3e45a67bada/.config -P u-boot
         ./build.sh uboot
 
         sed -i "/^CONFIG_NUMA_BALANCING=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/defconfig
