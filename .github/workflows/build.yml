@@ -119,7 +119,7 @@ jobs:
       if: steps.compile.outcome == 'failure'
       run: |
         cd project/friendlywrt
-        rm .config .config.old ./tmp
+        rm .config .config.old
         wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/624a47e1eb22f2f0c19f71ba44f07fe58b4af140/.config
         make -j1 V=sc
 
