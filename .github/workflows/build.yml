@@ -81,7 +81,7 @@ jobs:
       run: |
         cd project
         # wget https://gist.githubusercontent.com/JucaRei/e0faf072848f8c9ffd26ecb18e0733cf/raw/948167483fb403398d04b990feebfbfbf00baa34/.config -P friendlywrt
-        wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/cb61f5d8a692bf30284a4eb277ae463b5099dc1d/.config -P friendlywrt
+        wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/624a47e1eb22f2f0c19f71ba44f07fe58b4af140/.config -P friendlywrt
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
         sed -i 's/192.168.2.1/10.10.10.1/g' friendlywrt/target/linux/rockchip/armv8/base-files/etc/board.d/02_network
@@ -111,6 +111,7 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
+        wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/624a47e1eb22f2f0c19f71ba44f07fe58b4af140/.config
         make -j$(nproc) || make -j1 V=s
         echo $?
 
@@ -268,7 +269,6 @@ jobs:
       run: |
         cd project
         # wget https://gist.githubusercontent.com/JucaRei/41f48ce460b480a6bffb0b2e3a177714/raw/6c0f9bc41f60d6dd2263b6bd16d482108ec43bf8/.config -P u-boot
-        wget https://gist.githubusercontent.com/JucaRei/6276c6ab5852c0b4722b340ff884b424/raw/97c0d4ec00ec873ad54977f40fd4dfa8d6f8863b/.config -P u-boot
         ./build.sh uboot
 
         sed -i "/^CONFIG_NUMA_BALANCING=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/defconfig
