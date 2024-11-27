@@ -197,7 +197,7 @@ jobs:
         repo sync -c scripts/sd-fuse  --no-clone-bundle
         repo sync -c toolchain  --no-clone-bundle
         # wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
-        wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/96e83d2bfe8fd00b5b5bb9d06ef54cbcafe39532/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/18b4b46647283600afdc1d8492c4db562006b4cb/.config -P kernel
 
     - name: Download friendlywrt rootfs (non-docker)
       if: matrix.SET == 'non-docker'
@@ -268,7 +268,7 @@ jobs:
     - name: Compile uboot and kernel
       run: |
         cd project
-        # wget https://gist.githubusercontent.com/JucaRei/41f48ce460b480a6bffb0b2e3a177714/raw/63c5b74766a97535da65d8a058d7e8a20737a657/.config -P u-boot
+        # wget https://gist.githubusercontent.com/JucaRei/41f48ce460b480a6bffb0b2e3a177714/raw/6c0f9bc41f60d6dd2263b6bd16d482108ec43bf8/.config -P u-boot
         ./build.sh uboot
 
         sed -i "/^CONFIG_NUMA_BALANCING=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=y" kernel/arch/arm64/configs/defconfig
@@ -285,7 +285,7 @@ jobs:
 
         # wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
 
-        wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/96e83d2bfe8fd00b5b5bb9d06ef54cbcafe39532/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/18b4b46647283600afdc1d8492c4db562006b4cb/.config -P kernel
 
         ./build.sh kernel
 
