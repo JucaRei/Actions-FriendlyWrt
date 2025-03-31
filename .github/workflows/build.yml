@@ -37,7 +37,8 @@ jobs:
         # SET: [docker, non-docker]
         # SET: [ docker ]
         VERSION: ['23.05', '24.10']
-        SET: [ docker ]
+        # SET: [ docker ]
+        SET: [ non-docker ]
         # SET: [docker, non-docker]
 
     steps:
@@ -115,9 +116,7 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
-        # wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/624a47e1eb22f2f0c19f71ba44f07fe58b4af140/.config
-        # wget https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/870c493f7847de773a342e99ec9592d3be89e5be/.config
-        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/7c3adac6b3988feff80df226c860014c1c6ae4aa/.config
+        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/2a27570278799b1a0f409ed82ae6ff9bb540a1f1/.config
         cp .config .config.old
         make -j$(nproc) || make -j1 V=s
         echo $?
@@ -127,9 +126,7 @@ jobs:
       run: |
         cd project/friendlywrt
         rm .config .config.old
-        # wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/624a47e1eb22f2f0c19f71ba44f07fe58b4af140/.config
-        # wget https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/870c493f7847de773a342e99ec9592d3be89e5be/.config
-        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/7c3adac6b3988feff80df226c860014c1c6ae4aa/.config
+        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/2a27570278799b1a0f409ed82ae6ff9bb540a1f1/.config
         cp .config .config.old
 
         make -j1 V=sc
@@ -167,7 +164,8 @@ jobs:
         # CPU: [rk3328, rk3528, rk3399, rk3566, rk3568, rk3588]
         CPU: [ rk3566 ]
         # SET: [docker, non-docker]
-        SET: [ docker ]
+        # SET: [ docker ]
+        SET: [ non-docker ]
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -209,9 +207,6 @@ jobs:
         repo sync -c scripts --no-clone-bundle
         repo sync -c scripts/sd-fuse  --no-clone-bundle
         repo sync -c toolchain  --no-clone-bundle
-        # wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
-        # wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/63686d1d90c8e56d071d9eca8a096db5ffbde159/.config -P kernel
-        # wget https://gist.githubusercontent.com/JucaRei/1f9e2e952c83c55ba3ad6772a3d9468a/raw/55ce55cafa69140dcef9b28f35e54450ae332bd4/.config -P kernel
 
     - name: Download friendlywrt rootfs (non-docker)
       if: matrix.SET == 'non-docker'
@@ -283,7 +278,10 @@ jobs:
       run: |
         cd project
         ## wget https://gist.githubusercontent.com/JucaRei/41f48ce460b480a6bffb0b2e3a177714/raw/6c0f9bc41f60d6dd2263b6bd16d482108ec43bf8/.config -P u-boot
-        #wget https://gist.githubusercontent.com/JucaRei/6276c6ab5852c0b4722b340ff884b424/raw/71fb6b79f4096d6950fe16a547a4e3e45a67bada/.config -P u-boot
+        rm u-boot/configs/nanopi_r3_defconfig
+        wget https://gist.githubusercontent.com/JucaRei/bb72daaffa4a673df7ce5a86cbd7ca1b/raw/eba8ae3a7da17367c965bac84afbbb20bd22f9ca/nanopi_r3_defconfig -P u-boot/configs
+        wget https://gist.githubusercontent.com/JucaRei/6276c6ab5852c0b4722b340ff884b424/raw/71fb6b79f4096d6950fe16a547a4e3e45a67bada/.config -P u-boot
+        cp u-boot/.config u-boot/.config.old
         ./build.sh uboot
 
         # sed -i "/^CONFIG_NUMA_BALANCING=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=yn\CONFIG_CGROUP_CPU=yn\CONFIG_CGROUP_DEBUG=yn\CONFIG_MEMCG_SWAP=yn\CONFIG_MEMCG_SWAP_ENABLED=y" kernel/arch/arm64/configs/defconfig
@@ -300,7 +298,9 @@ jobs:
 
         # wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
         # wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/63686d1d90c8e56d071d9eca8a096db5ffbde159/.config -P kernel
-        wget https://gist.githubusercontent.com/JucaRei/85526b3ddc6016622c9718e42746b826/raw/c6970238d22b125fc323bfbd5ce24645ede46a81/.config -P kernel
+        rm kernel/arch/arm64/configs/nanopi5_linux_defconfig
+        wget https://gist.githubusercontent.com/JucaRei/a3206e38e72f2b3dd3bd8d1d2f9a9f9c/raw/276400501007be9669908522fbca47e7b0b6d218/nanopi5_linux_defconfig -P kernel/arch/arm64/configs
+        wget https://gist.githubusercontent.com/JucaRei/85526b3ddc6016622c9718e42746b826/raw/88697579ee4370cf5ac98e9e061b5a326708604d/.config -P kernel
         cp kernel/.config kernel/.config.old
 
         ./build.sh kernel
