@@ -118,6 +118,7 @@ jobs:
         # wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/624a47e1eb22f2f0c19f71ba44f07fe58b4af140/.config
         # wget https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/870c493f7847de773a342e99ec9592d3be89e5be/.config
         wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/7c3adac6b3988feff80df226c860014c1c6ae4aa/.config
+        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/7c3adac6b3988feff80df226c860014c1c6ae4aa/.config.old
         make -j$(nproc) || make -j1 V=s
         echo $?
 
@@ -129,6 +130,8 @@ jobs:
         # wget https://gist.githubusercontent.com/JucaRei/84c3d77a6b8786653d10cf2fb5a6aeff/raw/624a47e1eb22f2f0c19f71ba44f07fe58b4af140/.config
         # wget https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/870c493f7847de773a342e99ec9592d3be89e5be/.config
         wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/7c3adac6b3988feff80df226c860014c1c6ae4aa/.config
+        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/7c3adac6b3988feff80df226c860014c1c6ae4aa/.config.old
+
         make -j1 V=sc
 
     - name: Create rootfs package
@@ -297,7 +300,7 @@ jobs:
 
         # wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
         # wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/63686d1d90c8e56d071d9eca8a096db5ffbde159/.config -P kernel
-        # wget https://gist.githubusercontent.com/JucaRei/85526b3ddc6016622c9718e42746b826/raw/c6970238d22b125fc323bfbd5ce24645ede46a81/.config -P kernel
+        wget https://gist.githubusercontent.com/JucaRei/85526b3ddc6016622c9718e42746b826/raw/c6970238d22b125fc323bfbd5ce24645ede46a81/.config -P kernel
         wget https://gist.githubusercontent.com/JucaRei/85526b3ddc6016622c9718e42746b826/raw/c6970238d22b125fc323bfbd5ce24645ede46a81/.config.old -P kernel
 
         ./build.sh kernel
