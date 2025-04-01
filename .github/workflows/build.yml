@@ -116,7 +116,7 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
-        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/e3c5dce08f9559b06d476194b53aa4a261439d3a/.config
+        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/b269375124cbf5d6c8dc71f13f044eaf849844d9/.config
         cp .config .config.old
         make -j$(nproc) || make -j1 V=s
         echo $?
@@ -126,7 +126,7 @@ jobs:
       run: |
         cd project/friendlywrt
         rm .config .config.old
-        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/e3c5dce08f9559b06d476194b53aa4a261439d3a/.config
+        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/b269375124cbf5d6c8dc71f13f044eaf849844d9/.config
         cp .config .config.old
 
         make -j1 V=sc
