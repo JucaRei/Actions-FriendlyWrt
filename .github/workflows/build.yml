@@ -126,7 +126,7 @@ jobs:
         cd project/friendlywrt
         rm .config .config.old
         # wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/b269375124cbf5d6c8dc71f13f044eaf849844d9/.config
-        wget -c https://gist.githubusercontent.com/JucaRei/662385596865ce59ffc98efc4401e25c/raw/43a0ea79c4c0507a07152dc72f04e0900b54afc2/.config
+        wget -c https://gist.githubusercontent.com/JucaRei/662385596865ce59ffc98efc4401e25c/raw/7a0991369ed3916cfa4d97cb2c7e62449688d8c0/.config
         cp .config .config.old
         make -j1 V=sc
 
