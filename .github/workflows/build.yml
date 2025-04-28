@@ -36,7 +36,7 @@ jobs:
         # VERSION: [ 23.05 ]
         # SET: [docker, non-docker]
         # SET: [ docker ]
-        VERSION: ['23.05', '24.10']
+        VERSION: [ '24.10' ]
         # SET: [ docker ]
         SET: [ non-docker ]
         # SET: [docker, non-docker]
@@ -89,7 +89,7 @@ jobs:
         # wget https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/870c493f7847de773a342e99ec9592d3be89e5be/.config -P friendlywrt
         source ../scripts/add_packages.sh
         source ../scripts/custome_config.sh
-        sed -i 's/192.168.2.1/10.10.10.1/g' friendlywrt/target/linux/rockchip/armv8/base-files/etc/board.d/02_network
+        sed -i 's/192.168.2.1/11.11.11.1/g' friendlywrt/target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 
     - name: Prepare dot config and feeds
       run: |
@@ -116,7 +116,7 @@ jobs:
       continue-on-error: true
       run: |
         cd project/friendlywrt
-        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/b269375124cbf5d6c8dc71f13f044eaf849844d9/.config
+        # wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/b269375124cbf5d6c8dc71f13f044eaf849844d9/.config
         cp .config .config.old
         make -j$(nproc) || make -j1 V=s
         echo $?
@@ -296,11 +296,11 @@ jobs:
 
         # sed -i -e '$a\'$'\n''CONFIG_MALI_CSF_SUPPORT=y' kernel/arch/arm64/configs/rk356x.config
 
-        # wget https://gist.githubusercontent.com/JucaRei/836d4c819a1b5e2de4b1a3563a81704f/raw/1a76e3b101d06046737dc9def459c2647b86540e/.config -P kernel
-        # wget https://gist.githubusercontent.com/JucaRei/39c16aec3dabd0f805fc944ee6a2fb61/raw/63686d1d90c8e56d071d9eca8a096db5ffbde159/.config -P kernel
-        rm kernel/arch/arm64/configs/nanopi5_linux_defconfig
-        wget https://gist.githubusercontent.com/JucaRei/a3206e38e72f2b3dd3bd8d1d2f9a9f9c/raw/276400501007be9669908522fbca47e7b0b6d218/nanopi5_linux_defconfig -P kernel/arch/arm64/configs
-        wget https://gist.githubusercontent.com/JucaRei/85526b3ddc6016622c9718e42746b826/raw/67268a0c259ec2f1ee1ad5572a612609a4639405/.config -P kernel
+        # rm kernel/arch/arm64/configs/nanopi5_linux_defconfig
+        # wget https://gist.githubusercontent.com/JucaRei/a3206e38e72f2b3dd3bd8d1d2f9a9f9c/raw/276400501007be9669908522fbca47e7b0b6d218/nanopi5_linux_defconfig -P kernel/arch/arm64/configs
+
+        # Lastest
+        wget https://gist.githubusercontent.com/JucaRei/3416991db22739b8bf0289355b6d9e70/raw/ceae22b662ed0d8e6be4151789ddd2463bfa1bc8/.config -P kernel
         cp kernel/.config kernel/.config.old
 
         ./build.sh kernel

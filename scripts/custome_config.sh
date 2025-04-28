@@ -8,6 +8,7 @@ sed -i -e 's/CONFIG_SDK=y/# CONFIG_SDK is not set/g' configs/rockchip/01-nanopi
 sed -i -e '$ a CONFIG_PACKAGE_kmod-mt7921u=y' configs/rockchip/01-nanopi
 sed -i -e '$ a CONFIG_PACKAGE_kmod-mt76x0u=y' configs/rockchip/01-nanopi
 sed -i -e '$ a CONFIG_PACKAGE_kmod-mt7601u=y' configs/rockchip/01-nanopi
+sed -i -e '$ a CONFIG_PACKAGE_kmod-mt76x2u=y' configs/rockchip/01-nanopi
 sed -i -e '$ a CONFIG_PACKAGE_kmod-rtl8xxxu=y' configs/rockchip/01-nanopi
 
 # sed -i -e '$ a CONFIG_PREEMPT_BUILD=y' configs/rockchip/01-nanopi
@@ -73,7 +74,6 @@ sed -i -e '$ a CONFIG_PACKAGE_kmod-rtl8xxxu=y' configs/rockchip/01-nanopi
 # sed -i -e '$ a CONFIG_CGROUP_BPF=y' configs/rockchip/01-nanopi
 # sed -i -e '$ a CONFIG_SCHED_AUTOGROUP=y' configs/rockchip/01-nanopi
 
-
 ## lang
 sed -i -e 's/CONFIG_LUCI_LANG_bg=y/# CONFIG_LUCI_LANG_bg is not set/g' configs/rockchip/02-luci_lang
 sed -i -e 's/CONFIG_LUCI_LANG_ca=y/# CONFIG_LUCI_LANG_ca is not set/g' configs/rockchip/02-luci_lang
@@ -104,7 +104,6 @@ sed -i -e 's/CONFIG_LUCI_LANG_zh_Hant=y/# CONFIG_LUCI_LANG_zh_Hant is not set/g'
 # Custom
 
 # CONFIG_ANDROID_ARM64_WORKAROUND_DMA_BEYOND_POC=y
-
 
 # Utils
 
