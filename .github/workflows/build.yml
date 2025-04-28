@@ -125,9 +125,9 @@ jobs:
       run: |
         cd project/friendlywrt
         rm .config .config.old
-        wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/b269375124cbf5d6c8dc71f13f044eaf849844d9/.config
+        # wget -c https://gist.githubusercontent.com/JucaRei/9560007c4eb36d5dd6d54fc1d2871aaa/raw/b269375124cbf5d6c8dc71f13f044eaf849844d9/.config
+        wget -c https://gist.githubusercontent.com/JucaRei/662385596865ce59ffc98efc4401e25c/raw/43a0ea79c4c0507a07152dc72f04e0900b54afc2/.config
         cp .config .config.old
-
         make -j1 V=sc
 
     - name: Create rootfs package
@@ -276,10 +276,10 @@ jobs:
       run: |
         cd project
         ## wget https://gist.githubusercontent.com/JucaRei/41f48ce460b480a6bffb0b2e3a177714/raw/6c0f9bc41f60d6dd2263b6bd16d482108ec43bf8/.config -P u-boot
-        rm u-boot/configs/nanopi_r3_defconfig
-        wget https://gist.githubusercontent.com/JucaRei/bb72daaffa4a673df7ce5a86cbd7ca1b/raw/eba8ae3a7da17367c965bac84afbbb20bd22f9ca/nanopi_r3_defconfig -P u-boot/configs
-        wget https://gist.githubusercontent.com/JucaRei/6276c6ab5852c0b4722b340ff884b424/raw/71fb6b79f4096d6950fe16a547a4e3e45a67bada/.config -P u-boot
-        cp u-boot/.config u-boot/.config.old
+        # rm u-boot/configs/nanopi_r3_defconfig
+        # wget https://gist.githubusercontent.com/JucaRei/bb72daaffa4a673df7ce5a86cbd7ca1b/raw/eba8ae3a7da17367c965bac84afbbb20bd22f9ca/nanopi_r3_defconfig -P u-boot/configs
+        # wget https://gist.githubusercontent.com/JucaRei/6276c6ab5852c0b4722b340ff884b424/raw/71fb6b79f4096d6950fe16a547a4e3e45a67bada/.config -P u-boot
+        # cp u-boot/.config u-boot/.config.old
         ./build.sh uboot
 
         # sed -i "/^CONFIG_NUMA_BALANCING=y=.*/i\CONFIG_NUMA_BALANCING=yn\CONFIG_CGROUP_SCHED=yn\CONFIG_RT_GROUP_SCHED=yn\CONFIG_UCLAMP_TASK_GROUP=yn\CONFIG_CGROUP_RDMA=yn\CONFIG_CGROUP_CPU=yn\CONFIG_CGROUP_DEBUG=yn\CONFIG_MEMCG_SWAP=yn\CONFIG_MEMCG_SWAP_ENABLED=y" kernel/arch/arm64/configs/defconfig
